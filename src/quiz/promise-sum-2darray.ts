@@ -5,10 +5,14 @@ const array2D_1 = [
 ];
 
 const sumByRowPromises: Promise<number>[] = array2D_1.map((row: number[]) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const sum = row.reduce((acc, val) => acc + val, 0);
-            resolve(sum);
+            try {
+                const sum = row.reduce((acc, val) => acc + val, 0);
+                resolve(sum);
+            } catch (err) {
+                reject(`Error: ${err}`);
+            }
         }, 0);
     })
 });
