@@ -4,7 +4,7 @@ const array2D_1 = [
     [7, 8, 9]
 ];
 
-const promises: Promise<number>[] = array2D_1.map((row: number[]) => {
+const sumByRowPromises: Promise<number>[] = array2D_1.map((row: number[]) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             const sum = row.reduce((acc, val) => acc + val, 0);
@@ -13,7 +13,7 @@ const promises: Promise<number>[] = array2D_1.map((row: number[]) => {
     })
 });
 
-Promise.all(promises)
+Promise.all(sumByRowPromises)
     .then((sums: number[]) => {
         console.log('sums:', sums);
     })
