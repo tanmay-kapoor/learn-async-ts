@@ -1,1 +1,43 @@
 Explain the code execution based on the order of the messages logged in src/quiz/promise-2darray.txt.
+
+
+1. The sum2DArray function takes a 2D array of numbers as input and returns a Promise that resolves with the sum of all
+the numbers in the array and rejects if the input is an empty array.
+
+2. We first call sumPromise1 which is a call to the sum2DArray function with a non-empty array as input.
+
+3. When we enter the sum@DArray function, we first log "Sum called" which gets printed in the console.
+
+4. Now, if the array is empty, we reject the Promise with the Error message "Cannot sum an empty array".
+
+5. We then have a setTimeout that takes in a function that will be executed after 0ms delay. Since setTimeout takes a
+callback to execute after the delay, the callback function is pushed to the event loop and will be executed after the
+current call stack is empty.
+
+6. Meanwhile, the flow of the program goes to the next line where we log "returning the sum" and then we return. The callback
+given to setTimeout executes on its own and all the log statements inside are executed in their own time and hence the order
+of statements is
+
+7. Similarly, our sumPromise2 is executed right after calling the sumPromise1 and does not wait for it to be resolved/rejected
+
+8. We proceed to call sumPromise2 and also print its log statements in the console as intended, but they end up being
+printed before the callback inside setTimeout has finished executing for sumPromise1 and the flow of code does not
+state that we should be waiting for sumPromise1 to be resolved before executing sumPromise2 and hence that is why
+Sum called is printed for a second time before the sum of all numbers from sumPromise1's input is printed.
+
+9. sumPromise2 is supplied an empty array and is hence rejected before sumPromise1 can finish calculating the sum of its
+numbers and hence we have the sumPromise2: Cannot sum an empty array before the "Adding 1 to sum" etc statements from
+sumPromise1.
+
+
+
+
+FLOW OF CODE
+
+call sumPromise1 => Sum called (setTimeout stuff starts but not finished yet [A]) => returning from sum
+
+call sumPromise2 => Sum called => reject with Cannot sum an empty array => returning from sum => print sumPromise2: Cannot sum an empty array
+
+while [A] is doing its task, a bunch of Adding num to sum statements are printed in the console
+
+[A] finishes its task and sumPromise1 is resolved, => .then() of sumPromise1 is called => print sumPromise1: Adding 1 to sum etc
